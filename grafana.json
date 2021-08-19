@@ -1,0 +1,328 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 34,
+    "links": [],
+    "panels": [
+      {
+        "datasource": "prometheus",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "green",
+                    "index": 1,
+                    "text": "DOWN"
+                  },
+                  "1": {
+                    "color": "green",
+                    "index": 0,
+                    "text": "UP"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 0,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.0.3",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "fluxcd_up",
+            "interval": "",
+            "legendFormat": "",
+            "queryType": "randomWalk",
+            "refId": "A"
+          }
+        ],
+        "title": "Flux Versions Exporter Status",
+        "type": "stat"
+      },
+      {
+        "datasource": "prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "fixed"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "filterable": true
+            },
+            "mappings": [
+              {
+                "options": {
+                  "False": {
+                    "color": "red",
+                    "index": 1,
+                    "text": "False"
+                  },
+                  "True": {
+                    "color": "green",
+                    "index": 0,
+                    "text": "True"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Current revision"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 403
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Flux Status Ready"
+              },
+              "properties": [
+                {
+                  "id": "custom.displayMode",
+                  "value": "color-background"
+                },
+                {
+                  "id": "custom.width",
+                  "value": 154
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Flux Suspended"
+              },
+              "properties": [
+                {
+                  "id": "custom.displayMode",
+                  "value": "color-background"
+                },
+                {
+                  "id": "custom.width",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "App"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 226
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "K8S Pod"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 338
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "K8S Namespace"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 149
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Message"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 94
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 16,
+          "x": 0,
+          "y": 7
+        },
+        "id": 2,
+        "options": {
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "8.0.3",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "fluxcd_version_applied",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "queryType": "randomWalk",
+            "refId": "A"
+          }
+        ],
+        "title": "Panel Title",
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "Value": true,
+                "__name__": true,
+                "container": true,
+                "endpoint": true,
+                "exported_namespace": true,
+                "instance": true,
+                "job": true,
+                "pod": true,
+                "service": true
+              },
+              "indexByName": {
+                "Time": 2,
+                "Value": 15,
+                "__name__": 3,
+                "container": 4,
+                "endpoint": 5,
+                "exported_namespace": 6,
+                "instance": 7,
+                "job": 8,
+                "message": 9,
+                "name": 0,
+                "namespace": 10,
+                "pod": 11,
+                "ready": 12,
+                "revision": 1,
+                "service": 13,
+                "suspended": 14
+              },
+              "renameByName": {
+                "Value": "",
+                "message": "Message",
+                "name": "App",
+                "namespace": "K8S Namespace",
+                "pod": "K8S Pod",
+                "ready": "Flux Status Ready",
+                "revision": "Current revision",
+                "service": "",
+                "suspended": "Flux Suspended"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 30,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Flux-versions",
+    "uid": "tA_OYon7z",
+    "version": 5
+  }

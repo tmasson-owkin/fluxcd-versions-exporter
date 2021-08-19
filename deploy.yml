@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fluxcd-versions-exporter
+  labels:
+    app: fluxcd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fluxcd-versions-exporter
+  template:
+    metadata:
+      labels:
+        app: fluxcd-versions-exporter
+    spec:
+      serviceAccountName: fluxcd-versions-exporter
+      containers:
+      - name: fluxcd-exporter
+        image: fluxcd-versions-exporter
+        imagePullPolicy: Never
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 250m
+            memory: 64Mi
+          requests:
+            cpu: 125m
+            memory: 32Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fluxcd-versions-exporter
+  labels:
+    app: fluxcd-versions-exporter
+  annotations:
+    "prometheus.io/port": "8080"
+    "prometheus.io/scrape": "true"
+spec:
+  type: ClusterIP
+  selector:
+    app: fluxcd-versions-exporter
+  ports:
+    - name: metrics
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fluxcd-versions-exporter
+  labels:
+    app: fluxcd-versions-exporter
+spec:
+  selector:
+    matchLabels:
+      app: fluxcd-versions-exporter
+  endpoints:
+    - port: metrics
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: fluxcd-versions-exporter
+  labels:
+    app: fluxcd-versions-exporter
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fluxcd-versions-exporter
+  labels:
+    app: fluxcd-versions-exporter
+rules:
+- apiGroups: ["kustomize.toolkit.fluxcd.io","helm.toolkit.fluxcd.io","source.toolkit.fluxcd.io","notification.toolkit.fluxcd.io"]
+  resources: ["buckets", "gitrepositories","helmrepositories","helmcharts","helmreleases","kustomizations","receivers","providers","alerts"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: fluxcd-versions-exporter
+  labels:
+    app: fluxcd-versions-exporter
+subjects:
+- kind: ServiceAccount
+  name: fluxcd-versions-exporter
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: fluxcd-versions-exporter
+  apiGroup: "rbac.authorization.k8s.io"
